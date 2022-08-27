@@ -27,14 +27,23 @@ const chainMaker = {
   },
 
   removeLink(position) {
-    if (typeof(position) !== 'number') {return new Error(`You can't remove incorrect link!`)}
-    if (position < 1 || position > this.length) {return new Error(`You can't remove incorrect link!`)}
-    
-    const dataArray = this.data.split('~~')
-    dataArray.splice(position - 1, 1)
-    this.data = dataArray.join('~~')
-    console.log(this.data, 'Remove link', `position = ${position}`)
-    return this
+    try {
+
+      if (typeof(position) !== 'number' ||  position < 1 || position > this.length) {
+        this.data = ''
+        this.length = 0
+        throw new Error(`You can't remove incorrect link!`)
+      }
+
+      const dataArray = this.data.split('~~')
+      dataArray.splice(position - 1, 1)
+      this.data = dataArray.join('~~')
+      console.log(this.data, 'Remove link', `position = ${position}`)
+      return this
+
+    } catch (error) {
+      throw error
+    }
   },
 
   reverseChain() {
@@ -61,7 +70,7 @@ module.exports = {
   chainMaker
 };
 
-chainMaker.reverseChain().addLink('DEF').reverseChain().reverseChain().reverseChain().addLink(333).addLink(null).addLink(0).reverseChain().reverseChain().finishChain()
+
 
 
 
