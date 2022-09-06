@@ -17,18 +17,19 @@ function encodeLine(str) {
     .reduce((acc, item, index, arr) => {
       if (index === 0) {
         count++;
-      } else {
+      } else if (index !== arr.length - 1) {
         if (arr[index] === arr[index - 1]) {
           count++;
-          if (index === arr.length - 1) {
-            acc = [...acc, (count !== 1 ? count : "") + arr[index]];
-          }
         } else {
           acc = [...acc, (count !== 1 ? count : "") + arr[index - 1]];
           count = 1;
-          if (index === arr.length - 1) {
-            acc = [...acc, arr[index]];
-          }
+        }
+      } else {
+        if (arr[index] === arr[index - 1]) {
+          acc = [...acc, count + 1 + arr[index]];
+        } else {
+          acc = [...acc, (count !== 1 ? count : "") + arr[index - 1]];
+          acc = [...acc, arr[index]];
         }
       }
       return acc;
@@ -36,6 +37,7 @@ function encodeLine(str) {
     .join("");
 }
 
+console.log(encodeLine("abbcca"));
 module.exports = {
   encodeLine,
 };
