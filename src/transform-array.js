@@ -20,30 +20,38 @@ function transform(array) {
     "--double-next",
     "--double-prev",
   ];
-  return array.slice().reduce((acc, item, index, arr) => {
-    if (!controlsArray.includes(item)) {
-      if (item) acc = [...acc, item];
-    } else {
-      switch (item) {
-        case "--discard-prev":
-          acc.pop();
-          break;
-        case "--double-next":
-          acc = [...acc, arr[index + 1]];
-          break;
-        case "--double-prev":
-          acc = [...acc, arr[index - 1]];
-          break;
-        case "--discard-next":
-          arr[index + 1] = null;
-      }
+  try {
+    if (!Array.isArray(array)) {
+      throw new Error(`'arr' parameter must be an instance of the Array!`);
     }
-    return acc;
-  }, []);
-}
 
-const arr = [1, 2, 3, "--discard-next", 1337, "--discard-prev", 4, 5];
-console.log(transform(arr));
+    return array
+      .reduce((acc, item, index, arr) => {
+        if (!controlsArray.includes(item)) {
+          acc = [...acc, item];
+        } else {
+          switch (item) {
+            case "--discard-next":
+              if (arr[index + 1]) arr[index + 1] = null;
+              break;
+            case "--discard-prev":
+              if (arr[index - 1]) acc.pop();
+              break;
+            case "--double-next":
+              if (arr[index + 1]) acc = [...acc, arr[index + 1]];
+              break;
+            case "--double-prev":
+              if (arr[index - 1]) acc = [...acc, arr[index - 1]];
+              break;
+          }
+        }
+        return acc;
+      }, [])
+      .filter((item) => item !== null);
+  } catch (error) {
+    throw error;
+  }
+}
 
 module.exports = {
   transform,
