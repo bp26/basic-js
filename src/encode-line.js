@@ -17,19 +17,15 @@ function encodeLine(str) {
     .reduce((acc, item, index, arr) => {
       if (index === 0) {
         count++;
-      } else if (index !== arr.length - 1) {
+        if (arr.length === 1) acc = [...acc, arr[index]];
+      } else {
         if (arr[index] === arr[index - 1]) {
           count++;
+          if (index === arr.length - 1) acc = [...acc, count + arr[index]];
         } else {
           acc = [...acc, (count !== 1 ? count : "") + arr[index - 1]];
           count = 1;
-        }
-      } else {
-        if (arr[index] === arr[index - 1]) {
-          acc = [...acc, count + 1 + arr[index]];
-        } else {
-          acc = [...acc, (count !== 1 ? count : "") + arr[index - 1]];
-          acc = [...acc, arr[index]];
+          if (index === arr.length - 1) acc = [...acc, arr[index]];
         }
       }
       return acc;
