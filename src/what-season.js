@@ -16,10 +16,10 @@ function getSeason(date) {
     if (!date) {
       return "Unable to determine the time of year!";
     }
-    if (date instanceof Date === false && arguments.length > 0) {
+    if (date instanceof Date === false) {
       throw new Error("Invalid date!");
     }
-    if (Object.getOwnPropertyNames(date).length > 0 && arguments.length > 0) {
+    if (Object.getOwnPropertyNames(date).length > 0) {
       throw new Error("Invalid date!");
     }
     const month = date.getMonth();
