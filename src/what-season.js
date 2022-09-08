@@ -16,13 +16,12 @@ function getSeason(date) {
     if (!date) {
       return "Unable to determine the time of year!";
     }
-    if (
-      Object.prototype.toString.call(date) !== "[object Date]" ||
-      isNaN(date)
-    ) {
+    if (date instanceof Date === false && arguments.length > 0) {
       throw new Error("Invalid date!");
     }
-
+    if (Object.getOwnPropertyNames(date).length > 0 && arguments.length > 0) {
+      throw new Error("Invalid date!");
+    }
     const month = date.getMonth();
     if (month < 2) {
       return "winter";
@@ -39,9 +38,6 @@ function getSeason(date) {
     throw error;
   }
 }
-
-const obj = new Date(866, 2, 10, 12, 53, 10, 825);
-console.log(getSeason(obj));
 
 module.exports = {
   getSeason,
